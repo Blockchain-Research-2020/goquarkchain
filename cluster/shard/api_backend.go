@@ -364,12 +364,15 @@ func (s *ShardBackend) AddBlockListForSync(blockLst []*types.MinorBlock) error {
 			continue
 		}
 		if s.getBlockCommitStatusByHash(blockHash) == BLOCK_COMMITTED {
+			fmt.Println("should contine", block.NumberU64(), block.Branch().Value, block.Hash().String())
 			//continue
 		}
 		//TODO:support BLOCK_COMMITTING
 		_, xshardLst, err := s.MinorBlockChain.InsertChainForDeposits([]types.IBlock{block}, false)
 		if err != nil {
 			log.Error(s.logInfo+" Failed to add minor block", "err", err)
+			fmt.Println("PPPPPPPPPPPPP", block.NumberU64(), block.Branch().Value, block.Hash().String())
+			panic(err)
 			return err
 		}
 		if len(xshardLst) != 1 {

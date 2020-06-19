@@ -1077,6 +1077,7 @@ func (m *MinorBlockChain) insertChain(chain []types.IBlock, verifySeals bool, is
 	// Peek the error for the first block to decide the directing import logic
 	it := newInsertIterator(chain, m.Validator(), isCheckDB)
 	block, err := it.next()
+	fmt.Println("1097", err)
 	switch {
 	// First block is pruned, insert as sidechain and reorg only if TD grows enough
 	case err == ErrPrunedAncestor:
@@ -1115,7 +1116,7 @@ func (m *MinorBlockChain) insertChain(chain []types.IBlock, verifySeals bool, is
 		m.reportBlock(block, nil, err)
 		return it.index, events, coalescedLogs, xShardList, err
 	}
-
+	fmt.Println("1118", err)
 	// No validation errors for the first block (or chain prefix skipped)
 	for ; !qkcCommon.IsNil(block) && err == nil; block, err = it.next() {
 		mBlock := block.(*types.MinorBlock)
@@ -1183,6 +1184,7 @@ func (m *MinorBlockChain) insertChain(chain []types.IBlock, verifySeals bool, is
 		//	stats.report(chain, it.index)
 		xShardList = append(xShardList, state.GetXShardList())
 	}
+	fmt.Println("1186", err)
 	// Any blocks remaining here? The only ones we care about are the future ones
 	if !qkcCommon.IsNil(block) && err == ErrFutureBlock {
 		if err := m.addFutureBlock(block); err != nil {
@@ -1198,7 +1200,7 @@ func (m *MinorBlockChain) insertChain(chain []types.IBlock, verifySeals bool, is
 		}
 	}
 	stats.ignored += it.remaining()
-
+	fmt.Println("1202", err)
 	// Append a single chain head event if we've progressed the chain
 	if lastCanon != nil && m.CurrentBlock().Hash() == lastCanon.Hash() {
 		events = append(events, MinorChainHeadEvent{lastCanon.(*types.MinorBlock)})
