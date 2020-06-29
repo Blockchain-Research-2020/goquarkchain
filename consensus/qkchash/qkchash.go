@@ -23,6 +23,7 @@ var (
 )
 
 type cacheSeed struct {
+	// mu is used to protect the caches and the cache in the caches
 	mu     sync.Mutex
 	caches []*qkcCache
 }
