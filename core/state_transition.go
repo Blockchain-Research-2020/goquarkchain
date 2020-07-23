@@ -18,6 +18,7 @@ package core
 
 import (
 	"errors"
+	"fmt"
 	"math"
 	"math/big"
 
@@ -197,6 +198,7 @@ func (st *StateTransition) preCheck() error {
 // returning the result including the used gas. It returns an error if failed.
 // An error indicates a consensus issue.
 func (st *StateTransition) TransitionDb() (ret []byte, usedGas uint64, failed bool, err error) {
+	fmt.Println("zhi xing jiao xi", st.msg.TxHash().String())
 	var (
 		// vm errors do not effect consensus and are therefor
 		// not assigned to err, except for insufficient balance
@@ -231,6 +233,7 @@ func (st *StateTransition) TransitionDb() (ret []byte, usedGas uint64, failed bo
 	}
 	if contractCreation || evm.ContractAddress != nil {
 		ret, _, st.gas, vmerr = evm.Create(sender, st.data, st.gas, st.value, evm.ContractAddress)
+
 	} else {
 		// Increment the nonce for the next transaction
 		if !st.evm.IsApplyXShard {
@@ -253,6 +256,7 @@ func (st *StateTransition) TransitionDb() (ret []byte, usedGas uint64, failed bo
 			return nil, 0, false, vmerr
 		}
 	}
+	fmt.Println("259----", vmerr, st.msg.TxHash().String())
 	st.refundGas(vmerr)
 	st.chargeFee(st.gasUsed())
 	if vmerr == vm.ErrPoSWSenderNotAllowed {
