@@ -26,7 +26,7 @@ The following instructions are based on clean Ubuntu 18.04. For other operating 
 If you prefer to use Docker, you can [run a cluster inside Docker container](#run-a-cluster-inside-docker).
 
 ###  Setup Go Environment
-Goquarkchain requires golang sdk >= 1.13. You can skip this step if your environment meets the condition.
+goquarkchain requires golang sdk >= 1.13. You can skip this step if your environment meets the condition.
 ```bash
 # take go1.14.1 for example:
 wget https://studygolang.com/dl/golang/go1.14.1.linux-amd64.tar.gz
